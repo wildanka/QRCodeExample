@@ -32,8 +32,7 @@ public class QRCodeGenerator extends AppCompatActivity {
         btnGenerateQR.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                sourceText = etQRSource.getText().toString().trim();
-                sourceText2 = etQRSource.getText().toString();
+                sourceText = etQRSource.getText().toString().trim(); //trim will remove the unused whitespace in front and in back
                 Log.d("tes",sourceText);
                 Log.d("tes",sourceText2);
                 MultiFormatWriter multiFormatWriter = new MultiFormatWriter();
