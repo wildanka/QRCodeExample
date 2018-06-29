@@ -13,41 +13,34 @@ import com.google.zxing.integration.android.IntentResult;
 
 public class MainActivity extends AppCompatActivity {
     private Button btnScan;
+    private Button btnGenerate;
+    private final Activity activity = this;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        //binding
         btnScan = (Button) findViewById(R.id.btn_scan);
-        final Activity activity = this;
+        btnGenerate = (Button) findViewById(R.id.btn_generate);
+
+        //event listener
         btnScan.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                IntentIntegrator integrator = new IntentIntegrator(activity);
-                integrator.setDesiredBarcodeFormats(IntentIntegrator.QR_CODE);
-                integrator.setPrompt("Scan a QR Code");
-                integrator.setCameraId(0);
-                integrator.setBeepEnabled(false);
-                integrator.setBarcodeImageEnabled(false);
-                integrator.setOrientationLocked(false);
-                integrator.initiateScan();
+                Intent i = new Intent(activity,QRCodeScanner.class);
+                startActivity(i);
+            }
+        });
 
+        btnGenerate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(activity,QRCodeGenerator.class);
+                startActivity(i);
             }
         });
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        IntentResult result = IntentIntegrator.parseActivityResult(requestCode,resultCode, data);
-
-        if (result != null){
-            if(result.getContents()==null){
-                Toast.makeText(this, "QR Code Scan Cancelled",Toast.LENGTH_SHORT).show();
-            }{
-                Toast.makeText(this, result.getContents(), Toast.LENGTH_SHORT).show();
-            }
-        }else {
-            super.onActivityResult(requestCode, resultCode, data);
-        }
-    }
 }
