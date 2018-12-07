@@ -2,8 +2,8 @@ package com.example.dan.qrcodeexample;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.widget.Toast;
 
 import com.google.zxing.integration.android.IntentIntegrator;
@@ -25,6 +25,7 @@ public class QRCodeScanner extends AppCompatActivity {
         integrator.setBarcodeImageEnabled(false);
         integrator.setOrientationLocked(false);
         integrator.initiateScan();
+
     }
 
     @Override

@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">QRCodeExample</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="btn_invokeqrscan">btn_invokeQRScan</string>
+    <string name="press_to_scan">Press to Scan</string>
+    <string name="press_to_generate_qr_code">Press to Generate QR Code</string>
 </resources>
