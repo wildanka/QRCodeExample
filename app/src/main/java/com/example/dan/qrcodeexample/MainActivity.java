@@ -21,6 +21,17 @@ public class MainActivity extends AppCompatActivity {
     private TextView tvQRResult;
     private final Activity activity = this;
 
+    private OnActivityResultDataChanged mOnActivityResultDataChanged;  //interface instance
+
+    //the interface
+    public interface OnActivityResultDataChanged{
+        void onDataReceived(String data);
+    }
+    //setListener
+    public void setOnActivityResultDataChanged(OnActivityResultDataChanged listener) {
+        this.mOnActivityResultDataChanged = listener;
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -70,11 +81,11 @@ public class MainActivity extends AppCompatActivity {
 
         if (result != null){
             if(result.getContents()==null){
-
                 Toast.makeText(this, "QR Code Scan Cancelled",Toast.LENGTH_SHORT).show();
             }{
                 Toast.makeText(this, result.getContents(), Toast.LENGTH_SHORT).show();
                 tvQRResult.setText(result.getContents());
+                mOnActivityResultDataChanged.onDataReceived(result.getContents());
             }
         }else {
             super.onActivityResult(requestCode, resultCode, data);

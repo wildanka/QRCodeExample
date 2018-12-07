@@ -17,6 +17,11 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/press_to_generate_qr_code" />
+    <Button
+        android:id="@+id/btn_pass_value_to_fragment"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="pass value to fragment" />
 
     <TextView
         android:id="@+id/tv_result"
