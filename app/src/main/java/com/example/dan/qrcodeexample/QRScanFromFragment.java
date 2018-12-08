@@ -1,6 +1,7 @@
 package com.example.dan.qrcodeexample;
 
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -20,7 +21,8 @@ import com.google.zxing.integration.android.IntentResult;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class QRScanFromFragment extends Fragment implements MainActivity.OnActivityResultDataChanged{
+public class QRScanFromFragment extends Fragment implements OnActivityResultDataChanged{
+    private static final String TAG = "QRScanFromFragment";
     private Button btnScan;
     private TextView tvFragmentResult;
     private MainActivity mActivity;
@@ -29,12 +31,20 @@ public class QRScanFromFragment extends Fragment implements MainActivity.OnActiv
         // Required empty public constructor
     }
 
+    //TODO : create interface to be called in MainActivity
+    private OnScanQrButtonClicked mOnScanQrButtonClickedListener;  //interface instance
+    //the interface
+    public interface OnScanQrButtonClicked{
+        void triggerScanQr();
+    }
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mActivity = (MainActivity) getActivity();
         mActivity.setOnActivityResultDataChanged(this);
     }
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -46,17 +56,17 @@ public class QRScanFromFragment extends Fragment implements MainActivity.OnActiv
         btnScan.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                IntentIntegrator.forSupportFragment(QRScanFromFragment.this).initiateScan(); // `this` is the current Fragment
-                IntentIntegrator integrator = new IntentIntegrator(getActivity());
-                integrator.setDesiredBarcodeFormats(IntentIntegrator.ONE_D_CODE_TYPES);
-                integrator.setPrompt("Scan a barcode");
-                integrator.setCameraId(0);  // Use a specific camera of the device
-                integrator.setBeepEnabled(false);
-                integrator.setBarcodeImageEnabled(true);
-                integrator.initiateScan();
+                mOnScanQrButtonClickedListener.triggerScanQr();
+//                IntentIntegrator.forSupportFragment(QRScanFromFragment.this).initiateScan(); // `this` is the current Fragment
+//                IntentIntegrator integrator = new IntentIntegrator(getActivity());
+//                integrator.setDesiredBarcodeFormats(IntentIntegrator.ONE_D_CODE_TYPES);
+//                integrator.setPrompt("Scan a barcode");
+//                integrator.setCameraId(0);  // Use a specific camera of the device
+//                integrator.setBeepEnabled(false);
+//                integrator.setBarcodeImageEnabled(true);
+//                integrator.initiateScan();
             }
         });
-
         return rootView;
     }
 
@@ -75,6 +85,18 @@ public class QRScanFromFragment extends Fragment implements MainActivity.OnActiv
         } else {
             super.onActivityResult(requestCode, resultCode, data);
         }
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        try{
+            mOnScanQrButtonClickedListener = (OnScanQrButtonClicked) getActivity();
+        }catch(ClassCastException e){
+            Log.e(TAG,"onAttach: ClassCastException: "+e.getMessage());
+        }
+
+
     }
 
     @Override

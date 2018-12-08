@@ -14,23 +14,17 @@ import android.widget.Toast;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements QRScanFromFragment.OnScanQrButtonClicked{
     private Button btnScan;
     private Button btnGenerate;
     private FrameLayout containerFl;
     private TextView tvQRResult;
     private final Activity activity = this;
-
-    private OnActivityResultDataChanged mOnActivityResultDataChanged;  //interface instance
-
-    //the interface
-    public interface OnActivityResultDataChanged{
-        void onDataReceived(String data);
-    }
     //setListener
     public void setOnActivityResultDataChanged(OnActivityResultDataChanged listener) {
         this.mOnActivityResultDataChanged = listener;
     }
+    private OnActivityResultDataChanged mOnActivityResultDataChanged;  //interface instance
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -90,5 +84,18 @@ public class MainActivity extends AppCompatActivity {
         }else {
             super.onActivityResult(requestCode, resultCode, data);
         }
+    }
+
+    @Override
+    public void triggerScanQr() {
+        System.out.println("Fragment Just Triggered MainActivity");
+        IntentIntegrator integrator = new IntentIntegrator(activity);
+        integrator.setDesiredBarcodeFormats(IntentIntegrator.QR_CODE);
+        integrator.setPrompt("Scan a QR Code");
+        integrator.setCameraId(0);
+        integrator.setBeepEnabled(false);
+        integrator.setBarcodeImageEnabled(false);
+        integrator.setOrientationLocked(false);
+        integrator.initiateScan();
     }
 }
